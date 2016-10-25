@@ -85,20 +85,40 @@ albumSongList = null;
      }
  };
  
+ var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
+// Album button templates
+ var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 
  window.onload = function() {
      setCurrentAlbum(albumPicasso);
+     
+        songListContainer.addEventListener('mouseover', function(event) {
+         // #1
+         if (event.target.parentElement.className === 'album-view-song-item') {
+             // Change the content from the number to the play button's HTML
+        event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
+         }
+     });
+    
+         }
+            
+     });
 
      var albums = [albumPicasso,albumMarconi,albumFishing];
      var index = 0;
      albumImage.addEventListener('click',function(event){
          setCurrentAlbum(albums[index]);
          index++;
-         console.log('Current Index' + index)
-         console.log('Album Length:' + albums.length);
+         //console.log('Current Index' + index)
+         //console.log('Album Length:' + albums.length);
          if (index == albums.length) {
              index = 0;
          }
      });
      
  };
+
+
+
+
+  
