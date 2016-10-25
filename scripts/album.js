@@ -30,6 +30,21 @@
      ]
  };
 
+
+// Yet another albumm
+ var albumFishing= {
+     title: 'Fishing',
+     artist: 'Snook',
+     label: 'EM-Jigs',
+     year: '2016',
+     albumArtUrl: 'assets/images/album_covers/20.png',
+     songs: [
+         { title: 'Big Snook', duration: '1:01' },
+         { title: 'Glades', duration: '5:01' },
+         { title: 'Poling', duration: '3:21'},
+     ]
+ };
+
 var createSongRow = function(songNumber, songName, songLength) {
      var template =
         '<tr class="album-view-song-item">'
@@ -41,14 +56,19 @@ var createSongRow = function(songNumber, songName, songLength) {
  
      return template;
  };
+albumImage = null;
+albumArtist = null;
+albumTitle = null;
+albumReleaseInfo = null;
+albumSongList = null;
 
  var setCurrentAlbum = function(album) {
      // #1
-     var albumTitle = document.getElementsByClassName('album-view-title')[0];
-     var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-     var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-     var albumImage = document.getElementsByClassName('album-cover-art')[0];
-     var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+     albumTitle = document.getElementsByClassName('album-view-title')[0];
+     albumArtist = document.getElementsByClassName('album-view-artist')[0];
+     albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+     albumImage = document.getElementsByClassName('album-cover-art')[0];
+     albumSongList = document.getElementsByClassName('album-view-song-list')[0];
  
      // #2
      albumTitle.firstChild.nodeValue = album.title;
@@ -65,6 +85,20 @@ var createSongRow = function(songNumber, songName, songLength) {
      }
  };
  
+
  window.onload = function() {
      setCurrentAlbum(albumPicasso);
+
+     var albums = [albumPicasso,albumMarconi,albumFishing];
+     var index = 0;
+     albumImage.addEventListener('click',function(event){
+         setCurrentAlbum(albums[index]);
+         index++;
+         console.log('Current Index' + index)
+         console.log('Album Length:' + albums.length);
+         if (index == albums.length) {
+             index = 0;
+         }
+     });
+     
  };
