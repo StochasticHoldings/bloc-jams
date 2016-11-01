@@ -1,2 +1,4 @@
 Where I Am:
 
+All of Checkpoint 15 was complete but could not find commit so here is more text in order to create a commit with new content. 
+
