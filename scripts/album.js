@@ -1,3 +1,24 @@
+//1 
+var $playPause = $('.main-controls .play-pause')
+
+$playPause.on("click",controlFromBar)
+
+
+
+
+//2 
+
+var controlFromBar = function togglePlayFromPlayerBar() {
+    console.log("working"); 
+    if(currentSoundFile.isPaused()){
+    currentSoundFile.play();
+    }
+    else{
+        currentSoundFile.pause();
+    }
+    
+};
+
 var setSong = function(songNumber){
      if (currentSoundFile) {
          currentSoundFile.stop();
@@ -66,7 +87,7 @@ var createSongRow = function(songNumber, songName, songLength) {
          var songNumberCell = $(this).find('.song-item-number');
          var songNumber = songNumberCell.attr('data-song-number');
 
-         if (songNumber !== currentlyPlayingSong) {
+         if (songNumber !== currentlyPlayingSongNumber) {
              songNumberCell.html(songNumber);
          }
      };
@@ -191,21 +212,20 @@ var updatePlayerBarSong = function() {
 
          setTimeout(function() {
 
-                 for (var i = 0; i < songRows.length; i++) {
-                     console.log('registering event for', i)
-                     songRows[i].addEventListener('mouseleave', function(event) {
-                         var songItem = getSongItem(event.target);
-                         console.log('mouse left from', i)
-                         var songItemNumber = songItem.getAttribute('data-song-number');
+      // for (var i = 0; i < songRows.length; i++) {
+           $(".song-item-number").on('mouseleave', function(event) {
+              // var songItem = getSongItem(event.target);
+               console.log('mouse left from', i)
+               var songItemNumber = $(this).attr('data-song-number');
 
-                         // #2
-                         if (songItemNumber !== currentlyPlayingSong) {
-                             songItem.innerHTML = songItemNumber;
-                         }
-                     });
+               // #2
+               if (songItemNumber !== currentlyPlayingSong) {
+                   songItem.innerHTML = songItemNumber;
+               }
+           });
 
-                 }, 0);
-         }
+    //   }
+   }, 0);
 
 
          // Album button templates
@@ -228,25 +248,25 @@ var updatePlayerBarSong = function() {
              setCurrentAlbum(albumPicasso);
              $previousButton.click(previousSong);
              $nextButton.click(nextSong);
-             for (var i = 0; i < songRows.length; i++) {
-                 songRows[i].addEventListener('click', function(event) {
+             //for (var i = 0; i < songRows.length; i++) {
+                 $(".song-item-number").on('click', function(event) {
                      clickHandler(event.target);
                  });
-             }
+            // }
          });
 
 
-         songListContainer.addEventListener('mouseover', function(event) {
+        /* songListContainer.addEventListener('mouseover', function(event) {
              // #1
 
              if (event.target.parentElement.className === 'album-view-song-item') {
                  event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
              }
-         });
+         });*/
 
-         var albums = [albumPicasso, albumMarconi, albumFishing];
+         var albums = [albumPicasso, albumMarconi];
          var index = 0;
-         albumImage.addEventListener('click', function(event) {
+         $(".album-cover-art").on('click', function(event) {
              setCurrentAlbum(albums[index]);
              index++;
              //console.log('Current Index' + index)
