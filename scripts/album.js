@@ -14,7 +14,7 @@ $(document).on("click",$seekBars,function(event) {
           setVolume(seekBarFillRatio * 100);
       }
 
-      updateSeekPercentage($(this), seekBarFillRatio);
+      updateSeekPercentage($(this), seekBarFillRatio); 
   });
 
   $seekBars.find('.thumb').mousedown(function(event) {
@@ -52,7 +52,7 @@ $(document).on("click",$seekBars,function(event) {
 
                           updateSeekPercentage($seekBar, seekBarFillRatio);
                       });
-                  }
+                  } 
               };
 
               var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
@@ -68,7 +68,7 @@ $(document).on("click",$seekBars,function(event) {
                   $seekBar.find('.fill').width(percentageString);
                   $seekBar.find('.thumb').css({
                       left: percentageString
-                  });
+                  }); 
               };
 
 
@@ -77,10 +77,6 @@ $(document).on("click",$seekBars,function(event) {
 
               $(document).on("click", $playPause, controlFromBar);
      
-
-
-
-
               //2 
 
               var controlFromBar = function togglePlayFromPlayerBar() {
@@ -116,13 +112,14 @@ $(document).on("click",$seekBars,function(event) {
               };
 
               var getSongNumberCell = function(number) {
-                  return $('.song-item-number[data-song-number="' + number + ' "]');
+                  return $('.song-item-number[data-song-number="' + number + ' "]'); 
               };
 
      // pulled this out 
      function clickHandler() {
-                      var songNumber = $(this).attr('data-song-number');
-
+         console.log($(this).attr("class"));
+                      var songNumber = $(this).data('song-number');
+      console.log(songNumber);
                       if (currentlyPlayingSongNumber !== null) {
                           // Revert to song number for currently playing song because user started playing new song.
                           var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
@@ -130,7 +127,7 @@ $(document).on("click",$seekBars,function(event) {
                       }
                       if (currentlyPlayingSongNumber !== songNumber) {
                           // Switch from Play -> Pause button to indicate new song is playing.
-                          $(this).html(pauseButtonTemplate);
+                          //$(this).html(pauseButtonTemplate);
                           setSong(songNumber);
                           currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
                           updatePlayerBarSong();
@@ -145,43 +142,31 @@ $(document).on("click",$seekBars,function(event) {
 
                       } else if (currentlyPlayingSongNumber === songNumber) {
                           // Switch from Pause -> Play button to pause currently playing song.
-                          $(this).html(playButtonTemplate);
+                         // $(this).html(playButtonTemplate);
                           $('.main-controls .play-pause').html(playerBarPlayButton);
                           currentlyPlayingSong = null;
                           currentlyPlayingSongNumber = null;
                           currentSongFromAlbum = null;
                       }
-        
                   };
      //end of pulled out function
      
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
               var createSongRow = function(songNumber, songName, songLength) {
                   var template =
-                      '<tr class="album-view-song-item"><td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td><td class="song-item-title">' + songName + '</td><td class="song-item-duration">' + songLength + '</td></tr>';
+                      '<tr class="album-view-song-item"><td id="song'+ songNumber + '" class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td><td class="song-item-title">' + songName + '</td><td class="song-item-duration">' + songLength + '</td></tr>';
                   var $row = $(template);
                   function clickHandler() {
                       var songNumber = $(this).attr('data-song-number');
-
                       if (currentlyPlayingSongNumber !== null) {
                           // Revert to song number for currently playing song because user started playing new song.
                           var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
                           currentlyPlayingCell.html(currentlyPlayingSongNumber);
+                         
+                          console.log(currentlyPlayingCell);
                       }
                       if (currentlyPlayingSongNumber !== songNumber) {
                           // Switch from Play -> Pause button to indicate new song is playing.
-                          $(this).html(pauseButtonTemplate);
+                         // $(this).html(pauseButtonTemplate);
                           setSong(songNumber);
                           currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
                           updatePlayerBarSong();
@@ -223,7 +208,39 @@ $(document).on("click",$seekBars,function(event) {
                       }
                   };
 
-                  $row.find('.song-item-number').click(clickHandler);
+                  $(document).on("click",'td.song-item-number',function(){
+                    console.log($(this).attr("id"));
+                      var songNumber = $(this).data('song-number');
+      console.log(songNumber);
+                      if (currentlyPlayingSongNumber !== null) {
+                          // Revert to song number for currently playing song because user started playing new song.
+                          var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
+                          currentlyPlayingCell.html(currentlyPlayingSongNumber);
+                      }
+                      if (currentlyPlayingSongNumber !== songNumber) {
+                          // Switch from Play -> Pause button to indicate new song is playing.
+                          $(this).html(pauseButtonTemplate);
+                          setSong(songNumber);
+                          currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+                          updatePlayerBarSong();
+
+                          var $volumeFill = $('.volume .fill');
+                          var $volumeThumb = $('.volume .thumb');
+                          $volumeFill.width(currentVolume + '%');
+                          $volumeThumb.css({
+                              left: currentVolume + '%'
+                          });
+
+
+                      } else if (currentlyPlayingSongNumber === songNumber) {
+                          // Switch from Pause -> Play button to pause currently playing song.
+                          $(this).html(playButtonTemplate);
+                          $('.main-controls .play-pause').html(playerBarPlayButton);
+                          currentlyPlayingSong = null;
+                          currentlyPlayingSongNumber = null;
+                          currentSongFromAlbum = null;
+                      }   
+                  });
                   $row.hover(onHover, offHover);
                   return $row;
 
@@ -344,7 +361,7 @@ $(document).on("click",$seekBars,function(event) {
               setTimeout(function() {
 
                   // for (var i = 0; i < songRows.length; i++) {
-                  $(".song-item-number").on('mouseleave', function(event) {
+                 // $(".song-item-number").on('mouseleave', function(event) {
                       // var songItem = getSongItem(event.target);
                       var songItemNumber = $(this).attr('data-song-number');
 
@@ -379,12 +396,11 @@ $(document).on("click",$seekBars,function(event) {
                   setupSeekBars();
                   $previousButton.click(previousSong);
                   $nextButton.click(nextSong);
-                  //for (var i = 0; i < songRows.length; i++) {
+                  for (var i = 0; i < songRows.length; i++) {
                   $(document).on('click', ".song-item-number", function(event) {
-                      clickHandler(event.target);
+                    clickHandler(event.target);
                   });
-                  //
-           
+                  
                   function setupSeekBars() {
                   var $seekBars = $('.player-bar .seek-bar');
 
@@ -420,13 +436,13 @@ $(document).on("click",$seekBars,function(event) {
                   });
               };
 
-              /* songListContainer.addEventListener('mouseover', function(event) {
+               songListContainer.addEventListener('mouseover', function(event) {
                    // #1
 
                    if (event.target.parentElement.className === 'album-view-song-item') {
                        event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
                    }
-               });*/
+               });
 
               var albums = [albumPicasso, albumMarconi];
               var index = 0;
@@ -443,7 +459,7 @@ $(document).on("click",$seekBars,function(event) {
               console.log("songNumber type is " + typeof songNumber + "\n and currentlyPlayingSongNumber type is " + typeof currentlyPlayingSongNumber);
 
             var songNumber = parseInt($(this).attr('data-song-number'));
-        });
+        }; 
      
      
      
